@@ -10,8 +10,8 @@ import string, re
 from apiclient.discovery import build
 import sqlite3
 
-bot_settings_file = 'YouTubeBot.conf'
-bot_library_file = 'YouTubeBotLib.py'
+bot_settings_file = 'DeepIntoYouTubeStats.conf'
+bot_library_file = 'DeepIntoYouTubeStatsLib.py'
 bot_already_processed = []
 bot_last_sleep = 1.0
 r_last_refresh = 1.0
