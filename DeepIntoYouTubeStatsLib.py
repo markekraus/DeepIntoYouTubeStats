@@ -32,6 +32,8 @@ def print_video_info(my_yt_video_entry):
               my_yt_video_entry["items"][0]["snippet"]["publishedAt"])
         print('Video view count: %s' % 
                my_yt_video_entry["items"][0]["statistics"]["viewCount"])
+        print('Video title: %s' % 
+              my_yt_video_entry["items"][0]["snippet"]["title"])
         print('Video channel: %s' % 
               my_yt_video_entry["items"][0]["snippet"]["channelTitle"])
     except:
@@ -262,6 +264,7 @@ def get_yt_channel_text(my_yt_video_entry):
     yt_channel_title = yt_channel_title.replace(']','\]')
     yt_channel_title = yt_channel_title.replace('(','\(')
     yt_channel_title = yt_channel_title.replace(')','\)')
+    yt_channel_title = yt_channel_title.replace('|',unichr(9474))
     yt_channel_id = my_yt_video_entry["items"][0]["snippet"]["channelId"]
     yt_channel_text = "[%s](http://www.youtube.com/channel/%s)" % (
                        yt_channel_title, yt_channel_id)
@@ -275,6 +278,7 @@ def get_yt_title(my_yt_video_entry):
     yt_title = yt_title.replace(']','\]')
     yt_title = yt_title.replace('(','\(')
     yt_title = yt_title.replace(')','\)')
+    yt_title = yt_title.replace('|',unichr(9474))
     return yt_title
 
 
