@@ -206,7 +206,7 @@ def r_get_submissions():
 
 def get_yt_video_entry(my_yt_video_id):
     return yt_service.videos().list(id=my_yt_video_id, 
-                                    part='snippet,statistics').execute()
+                                    part='snippet,statistics,contentDetails').execute()
 
 
 def get_yt_upload_date(my_yt_video_entry):
@@ -256,6 +256,14 @@ def get_yt_like_count(my_yt_video_entry):
         yt_like_count = 0
     return yt_like_count
 
+def get_yt_duration(my_yt_video_entry):
+    try:
+        yt_duration = my_yt_video_entry["items"][0]["contentDetails"]["duration"]
+        yt_duration = str(isodate.parse_duration(yt_duration))
+    except:
+        yt_duration = '0:00:00'
+    return yt_duration
+
 
 def get_yt_channel_text(my_yt_video_entry):
     yt_channel_title = my_yt_video_entry["items"][0]["snippet"]["channelTitle"]
@@ -292,19 +300,21 @@ def get_comment_text(my_yt_video_id, my_yt_video_entry, my_r_submission, my_r_su
     yt_like_count = get_yt_like_count(my_yt_video_entry)
     yt_channel_text = get_yt_channel_text(my_yt_video_entry)
     yt_title = get_yt_title(my_yt_video_entry)
+    yt_duration = get_yt_duration(my_yt_video_entry)
     r_comment_text = "Information about this YouTube video as seen on %s:\n\n" %  time.strftime("%c %Z")
     r_comment_text += "Item | Value\n"
     r_comment_text += "---|---\n"
-    r_comment_text += "Channel | %s\n" % yt_channel_text
-    r_comment_text += "Title | [%s](%s)\n" % (yt_title, my_r_submission.url)
-    r_comment_text += "View Count | %s\n" % yt_view_count
-    r_comment_text += "Upload Date | %s\n" % yt_upload_date
-    r_comment_text += "Repost Count | [%s]" % r_repost_count
+    r_comment_text += "Channel: | %s\n" % yt_channel_text
+    r_comment_text += "Title: | [%s](%s)\n" % (yt_title, my_r_submission.url)
+    r_comment_text += "Duration: | %s\n" % yt_duration
+    r_comment_text += "View Count: | %s\n" % yt_view_count
+    r_comment_text += "Upload Date: | %s\n" % yt_upload_date
+    r_comment_text += "Repost Count: | [%s]" % r_repost_count
     r_comment_text += "(http://www.reddit.com/r/{0}/search?q=url%3A%22{1}%22&restrict_sr=on)\n".format(
                        my_r_subredit, my_yt_video_id)
-    r_comment_text += "Favorite Count | %s\n" % yt_favorite_count
-    r_comment_text += "Like Count | %s\n" % yt_like_count
-    r_comment_text += "Dislike Count | %s\n" % yt_dislike_count
+    r_comment_text += "Favorite Count: | %s\n" % yt_favorite_count
+    r_comment_text += "Like Count: | %s\n" % yt_like_count
+    r_comment_text += "Dislike Count: | %s\n" % yt_dislike_count
     r_comment_text += "\n"
     r_comment_text += bot_info_text
     return r_comment_text
